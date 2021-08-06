@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+// MakeGetRequest makes a typical GET request and returns the response body in byte format
 func MakeGetRequest(url string) (bodyBytes []byte) {
 
 	req, err := http.NewRequest("GET", url, nil)
@@ -31,6 +32,7 @@ func MakeGetRequest(url string) (bodyBytes []byte) {
 	return bodyBytes
 }
 
+// PlainGetRequest makes a GET request, but returns the raw HTTP response
 func PlainGetRequest(url string) (resp *http.Response, err error) {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -43,6 +45,7 @@ func PlainGetRequest(url string) (resp *http.Response, err error) {
 
 }
 
+// SetHeaders sets the HTTP headers of a GET request
 func SetHeaders(req *http.Request) {
 	req.Header.Set("User-Agent", "Mozilla/5.0")
 }

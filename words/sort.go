@@ -9,6 +9,8 @@ import (
 )
 
 // Thanks to incidrthreat for help with building the sort function!
+
+// SortWordList opens the unsorted wordlist and sorts it uniquely
 func SortWordList(filename string) {
 	file, _ := os.Open(filename)
 	defer file.Close()
@@ -19,8 +21,9 @@ func SortWordList(filename string) {
 		lines = append(lines, scanner.Text())
 	}
 
-	unique.Sort(unique.StringSlice{&lines})
+	unique.Sort(unique.StringSlice{&lines}) // Sorts the slice of strings (unsorted word list) uniquely
 
+	// Opens unsorted wordlist to truncate (overwrite) with sorted list
 	f, _ := os.OpenFile(filename, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 	w := bufio.NewWriter(f)
 

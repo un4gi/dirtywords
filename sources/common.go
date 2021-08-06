@@ -11,9 +11,13 @@ import (
 	"github.com/un4gi/dirtywords/words"
 )
 
-func CommonCrawl(domain string, filename string) {
+// Big shoutout to @lc for the inspiration!
+
+// CommonCrawl retrieves a list of archived URLs from commoncrawl.org
+func CommonCrawl(domain string, filename string, minLen int, maxLen int) {
 	req := requests.MakeGetRequest("http://index.commoncrawl.org/collinfo.json")
 
+	// Unmarshals JSON response
 	var cdxAPI config.CollInfo
 	err := json.Unmarshal(req, &cdxAPI)
 	if err != nil {
@@ -25,13 +29,17 @@ func CommonCrawl(domain string, filename string) {
 		index := cdxAPI[0].CDXAPI + fmt.Sprintf("?url=%s/*&output=json&fl=url", domain)
 		pages := getPagination(index)
 		fmt.Println("Generating wordlist. This could take a while...")
+
+		// For each page of results, grab individual URLs
 		for page := uint(0); page <= pages; page++ {
-			url := index + fmt.Sprintf("&page=%d", page) // Example of data stored in url: https://index.commoncrawl.org/CC-MAIN-2021-25-index?url=example.com/*&output=json&fl=url&page=0
+			url := index + fmt.Sprintf("&page=%d", page)
 
 			resp, err := requests.PlainGetRequest(url)
 			if err != nil {
 				fmt.Println("Something went wrong...")
 			}
+
+			// Parse response body for URLs
 			s := bufio.NewScanner(resp.Body)
 			for s.Scan() {
 				var getURLs config.UrlInfo
@@ -42,23 +50,27 @@ func CommonCrawl(domain string, filename string) {
 				if getURLs.Error != "" {
 					fmt.Println("Received an error from API.")
 				}
-				words.GetWords(getURLs.URL, domain, filename)
+				// Parse URLs and write words to file
+				words.GetWords(getURLs.URL, filename, minLen, maxLen)
 			}
 			resp.Body.Close()
 		}
 	}
 }
 
+// getPagination gets the total number of pages (of results) for the given domain
 func getPagination(index string) (pagination uint) {
 	getPages := index + "&page=0&showNumPages=true"
 	req := requests.MakeGetRequest(getPages)
 
+	// Unmarshals JSON response
 	var pageNum config.PageInfo
 	err := json.Unmarshal(req, &pageNum)
 	if err != nil {
 		log.Println(err)
 	}
 
+	// Grabs number of pages
 	bodyString := string(req)
 	if len(bodyString) > 0 {
 		pagination := pageNum.Pages

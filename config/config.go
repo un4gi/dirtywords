@@ -1,5 +1,6 @@
 package config
 
+// Data to unmarshal CommonCrawl response
 type CollInfo []struct {
 	ID       string `json:"id"`
 	Name     string `json:"name"`
@@ -7,6 +8,7 @@ type CollInfo []struct {
 	CDXAPI   string `json:"cdx-api"`
 }
 
+// Data to unmarshal OTX response
 type OTXResult struct {
 	HasNext    bool `json:"has_next"`
 	ActualSize int  `json:"actual_size"`
@@ -21,17 +23,19 @@ type OTXResult struct {
 	} `json:"url_list"`
 }
 
-const OTXResultsLimit = 200
+const OTXResultsLimit = 200 // Limit the number of OTX results
 
+// Data to unmarshal CommonCrawl pagination
 type PageInfo struct {
 	Pages    int `json:"pages"`
 	PageSize int `json:"pageSize"`
 	Blocks   int `json:"blocks"`
 }
 
+// Data to unmarshal CommonCrawl URL results
 type UrlInfo struct {
 	URL   string `json:"url"`
 	Error string `json:"error"`
 }
 
-type Wayback [][]string
+type Wayback [][]string // declares type for unmarshalling Wayback Machine response data
