@@ -31,7 +31,7 @@ func OTX(domain string, filename string, minLen int, maxLen int) {
 		for _, entry := range result.URLList {
 
 			// URL Encode various special characters to avoid errors with url.Parse in GetWords function
-			replacer := strings.NewReplacer(" ", "%20", "$", "%24", "`", "%60", "<", "%3C", "[", "%5B", "]", "%5D", "{", "%7B", "}", "%7D", "%", "%25", "\"", "%22", "+", "%2B", ";", "%3B", "\\", "%5C", "|", "%7C", ",", "%2C", "'", "%27", "\xa7", "%20", "\x15", "")
+			replacer := strings.NewReplacer(" ", "%20", "$", "%24", "`", "%60", "<", "%3C", "[", "%5B", "]", "%5D", "{", "%7B", "}", "%7D", "%", "%25", "\"", "%22", ";", "%3B", "\\", "%5C", "|", "%7C", ",", "%2C", "'", "%27", "\xa7", "%20", "\x15", "")
 			word := replacer.Replace(entry.URL)
 
 			// Parses each URL and writes words to file

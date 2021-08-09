@@ -12,8 +12,8 @@ import (
 func main() {
 
 	domain := flag.String("d", "", "domain to build a wordlist for")
-	minLen := flag.Int("min", 3, "minimum word length - defaults to 3")
-	maxLen := flag.Int("max", 12, "maximum word length - defaults to 12")
+	minLen := flag.Int("minLen", 3, "minimum word length - defaults to 3")
+	maxLen := flag.Int("maxLen", 12, "maximum word length - defaults to 12")
 	noSubs := flag.Bool("nosubs", false, "build wordlist without gathering data from subdomains")
 	outFile := flag.String("o", "", "filename to generate as wordlist")
 	sort := flag.Bool("s", true, "uniquely sort the results")
